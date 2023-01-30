@@ -16,4 +16,6 @@ use App\Http\Controllers\LoginController;
 Route::get('/', function () {
     return view('home');
 });
-Route::get('/login', [loginController::class, 'login']);
+Route::post('/searchTagihan', [loginController::class, 'searchTagihan']);
+Route::post('/login', [loginController::class, 'login']);
+
