@@ -4,22 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class loginController extends Controller
 {
     //
     public function login(Request $request){
-      $username = $request->username;
-      $password = $request->password;
-
-      $cek = DB::table('m_user')->where('username',$username)->first();
-      print_r($cek);
-      if($cek){
-        echo "ada";
+      $cred = array(
+        'username' => $request->username,
+        'password' => $request->password,
+      );
+      if (Auth::attempt($cred)) {
+        return redirect('/dashboard');
       }else{
-        echo "tidak ada";
+        return redirect('/')->with('error', 'Username atau Password Salah');
       }
-
     }
     function searchTagihan(Request $request){
         $no_pelanggan = $request->tagihan;

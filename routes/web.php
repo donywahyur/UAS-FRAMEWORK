@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,7 @@ use App\Http\Controllers\LoginController;
 |
 */
 
+Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 Route::get('/', function () {
     return view('home');
 });
