@@ -92,10 +92,18 @@
     <script src="{{ asset('/') }}assets/plugins/apexcharts/apexcharts.min.js"></script>
     <script src="{{ asset('/') }}assets/js/main.min.js"></script>
     <script src="{{ asset('/') }}assets/plugins/datatables/datatables.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $('.datatables').DataTable();
         } );
+        @if (session('status'))
+            Swal.fire(
+                "{{ session('status') == 1 ? 'Berhasil' : 'Gagal' }}",
+                "{{ session('msg') }}",
+                "{{ session('status') == 1 ? 'success' : 'error' }}",
+            )
+        @endif
     </script>
 </body>
 </html>

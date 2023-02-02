@@ -17,8 +17,17 @@ use App\Http\Controllers\HomeController;
 Route::get('/', function () { return view('home'); })->name('home');
 Route::post('/searchTagihan', [loginController::class, 'searchTagihan']);
 Route::post('/login', [loginController::class, 'login']);
-Route::get('/logout', [loginController::class, 'logout']);
+Route::get('/logout', [loginController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::get('/pelanggan', [HomeController::class, 'pelanggan'])->name('pelanggan');
 
+//admin
+Route::get('/pelanggan', [HomeController::class, 'pelanggan'])->name('pelanggan');
+Route::post('/pelanggan/tambah', [HomeController::class, 'tambahPelanggan'])->name('tambahPelanggan');
+Route::get('/pelanggan/edit/{id}', [HomeController::class, 'modalEditPelanggan'])->name('modalEditPelanggan');
+Route::post('/pelanggan/edit', [HomeController::class, 'editPelanggan'])->name('editPelanggan');
+Route::post('/pelanggan/nonaktif/{id}', [HomeController::class, 'nonaktifkanPelanggan'])->name('nonaktifkanPelanggan');
+Route::post('/pelanggan/aktif/{id}', [HomeController::class, 'aktifkanPelanggan'])->name('aktifkanPelanggan');
+
+Route::get('/tarif', [HomeController::class, 'tarif'])->name('tarif');
+Route::post('/tarif/update', [HomeController::class, 'updateTarif'])->name('updateTarif');
