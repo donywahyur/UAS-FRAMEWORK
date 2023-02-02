@@ -25,4 +25,8 @@ class loginController extends Controller
         $data = DB::table('t_pemakaian')->where('username', $no_pelanggan)->get();
         echo json_encode($data);
     }
+    function logout(){
+        Auth::logout();
+        return redirect('/');
+    }
 }

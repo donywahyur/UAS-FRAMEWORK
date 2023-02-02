@@ -14,10 +14,11 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', function () { return view('home'); })->name('home');
 Route::post('/searchTagihan', [loginController::class, 'searchTagihan']);
 Route::post('/login', [loginController::class, 'login']);
+Route::get('/logout', [loginController::class, 'logout']);
+
+Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+Route::get('/pelanggan', [HomeController::class, 'pelanggan'])->name('pelanggan');
 

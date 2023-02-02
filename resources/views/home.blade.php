@@ -47,7 +47,7 @@
                                         @csrf
                                         <button id="login_close" class="btn-close" style="padding:0px;border-radius: 50%;width: 20px;height: 20px;margin-right: 10px;line-height:initial;" type="button">x</button>
                                         <input type="text" class="mr-1" name="username" placeholder="Username" required>
-                                        <input type="text" class="mr-1" name="password" placeholder="Password" required>
+                                        <input type="password" class="mr-1" name="password" placeholder="Password" required>
                                         <button class="btn btn-primary" type="submit">Login</button>
                                     </form>
                                 </div>
@@ -293,7 +293,18 @@
   crossorigin="anonymous"></script>
         <script src="{{ asset('/') }}assets2/js/popper.min.js"></script>
         <script src="{{ asset('/') }}assets2/js/bootstrap.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
+            $(document).ready(function(){
+                @if(session('error'))
+                    Swal.fire(
+                        'Login Gagal',
+                        "{{ session('error') }}",
+                        'error' 
+                    );
+                    $("#login_text").click();
+                @endif
+            });
             async function searchTagihan(){
                 $.ajax({
                     url: "./searchTagihan",
