@@ -31,3 +31,6 @@ Route::post('/pelanggan/aktif/{id}', [HomeController::class, 'aktifkanPelanggan'
 
 Route::get('/tarif', [HomeController::class, 'tarif'])->name('tarif');
 Route::post('/tarif/update', [HomeController::class, 'updateTarif'])->name('updateTarif');
+
+Route::get('/pemakaian', [HomeController::class, 'pemakaian'])->name('pemakaian');
+Route::post('/pemakaian/table', [HomeController::class, 'pemakaianTable'])->name('pemakaianTable');

@@ -20,12 +20,12 @@
         @endif
 
         <li class="{{ $link == 'pemakaian' ? 'active-page' : '' }}">
-            <a href="./tarif" class="{{ $link == '' ? 'active' : ''}}"><i class="material-icons-two-tone">dashboard</i>Pemakaian Meter Air</a>
+            <a href="./pemakaian" class="{{ $link == '' ? 'active' : ''}}"><i class="material-icons-two-tone">dashboard</i>Pemakaian Meter Air</a>
         </li>
 
         @if(Auth::user()->role_id == 1)
-        <li class="{{ $link == '' ? 'active-page' : '' }}">
-            <a href="./tarif" class="{{ $link == '' ? 'active' : ''}}"><i class="material-icons-two-tone">dashboard</i>Laporan Bulanan</a>
+        <li class="{{ $link == 'laporan_bulanan' ? 'active-page' : '' }}">
+            <a href="./laporan_bulanan" class="{{ $link == '' ? 'active' : ''}}"><i class="material-icons-two-tone">dashboard</i>Laporan Bulanan</a>
         </li>
         @endif
     </ul>
