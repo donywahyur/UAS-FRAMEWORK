@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,17 +23,17 @@ Route::get('/logout', [loginController::class, 'logout'])->name('logout');
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 //admin
-Route::get('/pelanggan', [HomeController::class, 'pelanggan'])->name('pelanggan');
-Route::post('/pelanggan/tambah', [HomeController::class, 'tambahPelanggan'])->name('tambahPelanggan');
-Route::get('/pelanggan/edit/{id}', [HomeController::class, 'modalEditPelanggan'])->name('modalEditPelanggan');
-Route::post('/pelanggan/edit', [HomeController::class, 'editPelanggan'])->name('editPelanggan');
-Route::post('/pelanggan/nonaktif/{id}', [HomeController::class, 'nonaktifkanPelanggan'])->name('nonaktifkanPelanggan');
-Route::post('/pelanggan/aktif/{id}', [HomeController::class, 'aktifkanPelanggan'])->name('aktifkanPelanggan');
+Route::get('/pelanggan', [HomeController::class, 'pelanggan'])->name('pelanggan')->middleware('roleAuth:1');
+Route::post('/pelanggan/tambah', [HomeController::class, 'tambahPelanggan'])->name('tambahPelanggan')->middleware('roleAuth:1');;
+Route::get('/pelanggan/edit/{id}', [HomeController::class, 'modalEditPelanggan'])->name('modalEditPelanggan')->middleware('roleAuth:1');;
+Route::post('/pelanggan/edit', [HomeController::class, 'editPelanggan'])->name('editPelanggan')->middleware('roleAuth:1');;
+Route::post('/pelanggan/nonaktif/{id}', [HomeController::class, 'nonaktifkanPelanggan'])->name('nonaktifkanPelanggan')->middleware('roleAuth:1');;
+Route::post('/pelanggan/aktif/{id}', [HomeController::class, 'aktifkanPelanggan'])->name('aktifkanPelanggan')->middleware('roleAuth:1');;
 
-Route::get('/tarif', [HomeController::class, 'tarif'])->name('tarif');
-Route::post('/tarif/update', [HomeController::class, 'updateTarif'])->name('updateTarif');
+Route::get('/tarif', [HomeController::class, 'tarif'])->name('tarif')->middleware('roleAuth:1');;
+Route::post('/tarif/update', [HomeController::class, 'updateTarif'])->name('updateTarif')->middleware('roleAuth:1');;
 
-Route::get('/pemakaian', [HomeController::class, 'pemakaian'])->name('pemakaian');
-Route::post('/pemakaian/table', [HomeController::class, 'pemakaianTable'])->name('pemakaianTable');
-Route::post('/pemakaian/input', [HomeController::class, 'pemakaianInput'])->name('pemakaianInput');
-Route::post('/pemakaian/bayar', [HomeController::class, 'pemakaianBayar'])->name('pemakaianBayar');
+Route::get('/pemakaian', [HomeController::class, 'pemakaian'])->name('pemakaian')->middleware('roleAuth:1,2,3');;
+Route::post('/pemakaian/table', [HomeController::class, 'pemakaianTable'])->name('pemakaianTable')->middleware('roleAuth:1,2,3');;
+Route::post('/pemakaian/input', [HomeController::class, 'pemakaianInput'])->name('pemakaianInput')->middleware('roleAuth:1,2');;
+Route::post('/pemakaian/bayar', [HomeController::class, 'pemakaianBayar'])->name('pemakaianBayar')->middleware('roleAuth:1,3');;
