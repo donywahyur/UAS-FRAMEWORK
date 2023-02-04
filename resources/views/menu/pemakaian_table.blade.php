@@ -24,8 +24,8 @@
                                     {{ $p->meter }}
                                 @endif
                             </td>
-                            <td>{{ $p->total ?? 0 }}</td>
-                            <td>
+                            <td id="total_td_{{ $p->id }}">{{ $p->total ?? 0 }}</td>
+                            <td id="pembayaran_td_{{ $p->id }}">
                                 @if($p->status == 0 && $p->meter != 0)
                                     <a href="./pemakaian/bayar/{{ $p->id }}" class="btn btn-primary">Bayar</a>
                                 @elseif($p->status == 0 && $p->meter == 0)

@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col">
                     <div class="page-description">
-                        <h1>Pemakaian Meter Air</h1>
+                        <h1>Pemakaian Meter Air </h1>
                     </div>
                 </div>
             </div>
