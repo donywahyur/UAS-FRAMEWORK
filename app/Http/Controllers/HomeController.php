@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Tarif;
 use App\Models\Pemakaian;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class HomeController extends Controller
@@ -201,7 +202,7 @@ class HomeController extends Controller
                     'meter' => $meter,
                     'tarif' => $tarif,
                     'total' => $total,
-                    'modified_by' => '1',
+                    'modified_by' => Auth::user()->id,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
                 if($update){
@@ -217,7 +218,7 @@ class HomeController extends Controller
                     'meter' => $meter,
                     'tarif' => $tarif,
                     'total' => $total,
-                    'created_by' => '1',
+                    'created_by' => Auth::user()->id,
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
                 if($insert){
@@ -253,7 +254,7 @@ class HomeController extends Controller
                     'trx_id' => $cekPemakaian->trx_id,
                 ])->update([
                     'status' => '1',
-                    'modified_by' => '1',
+                    'modified_by' => Auth::user()->id,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
                 if($update){
