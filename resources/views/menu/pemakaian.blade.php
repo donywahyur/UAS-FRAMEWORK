@@ -26,10 +26,10 @@
                                 <label for="inputBulan" class="form-label">Bulan</label>
                                 <select name="bulan" id="inputBulan" class="form-control">
                                     @for($bulan = 1;$bulan <= 12;$bulan++)
-                                        <option value="{{ $bulan }}">{{ $bulan }}</option>
+                                        <option value="{{ $bulan }}" {{ $bulan == date('m') ? 'selected' : '' }}>{{ getNamaBulan($bulan) }}</option>
                                     @endfor
                                 </select><br>
-                                <button type="submit" class="btn btn-primary">Lihat</button>
+                                <button type="submit" class="btn btn-primary" id="buttonFilter">Lihat</button>
                             </form>
                         </div>
                     </div>
@@ -43,15 +43,17 @@
 <script>
     $("#formFilter").submit(function(e){
         e.preventDefault();
+        $("#buttonFilter").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`).attr('disabled',true);
         $.ajax({
             type: $(this).attr('method'),
             url: $(this).attr('action'),
             data: $(this).serialize(),
             cache: false,
             success: function(msg){
+                $("#buttonFilter").html('Lihat').attr('disabled',false);
                 $("#filter-content").html(msg);
             }
         });
-    })
+    });
 </script>
 @endsection

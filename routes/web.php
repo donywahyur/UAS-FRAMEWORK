@@ -34,3 +34,5 @@ Route::post('/tarif/update', [HomeController::class, 'updateTarif'])->name('upda
 
 Route::get('/pemakaian', [HomeController::class, 'pemakaian'])->name('pemakaian');
 Route::post('/pemakaian/table', [HomeController::class, 'pemakaianTable'])->name('pemakaianTable');
+Route::post('/pemakaian/input', [HomeController::class, 'pemakaianInput'])->name('pemakaianInput');
+Route::post('/pemakaian/bayar', [HomeController::class, 'pemakaianBayar'])->name('pemakaianBayar');

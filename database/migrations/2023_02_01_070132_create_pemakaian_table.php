@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('t_pemakaian', function (Blueprint $table) {
             $table->increments('trx_id');
-            $table->string('no_tagihan');
-            $table->integer('user_id');
+            $table->string('user_id');
             $table->integer('bulan');
             $table->integer('tahun');
             $table->string('meter');

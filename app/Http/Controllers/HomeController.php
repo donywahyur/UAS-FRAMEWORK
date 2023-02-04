@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Tarif;
+use App\Models\Pemakaian;
+use Validator;
 
 class HomeController extends Controller
 {
@@ -113,7 +116,8 @@ class HomeController extends Controller
         $tahun = $req->tahun;
         $bulan = $req->bulan;
 
-        $data = User::select([
+        $data['data'] = User::select([
+            'm_user.id',
             'm_user.username',
             'm_user.nama',
             'm_user.no_telp',
@@ -128,8 +132,105 @@ class HomeController extends Controller
         ])->leftJoin('t_pemakaian', function($join) use ($tahun, $bulan){
             $join->where('t_pemakaian.tahun', '=', $tahun);
             $join->where('t_pemakaian.bulan', '=', $bulan);
+            $join->on('t_pemakaian.user_id', '=', 'm_user.id');
         })->where('m_user.role_id',4)->get();
+        $data['tahunPilih'] = $tahun;
+        $data['bulanPilih'] = $bulan;
+        return view('menu.pemakaian_table', $data);
+    }
+    function pemakaianInput(Request $req){
+        $tahun = $req->tahun;
+        $bulan = $req->bulan;
+        $id = $req->id;
+        $meter = $req->meter;
 
-        return view('menu.pemakaian_table', compact('data'));
+        $tarif = Tarif::first()->tarif;
+        $validator = Validator::make($req->all(), [
+            'tahun' => 'required',
+            'bulan' => 'required',
+            'id' => 'required',
+            'meter' => 'required|numeric',
+        ]);
+
+        if(!$validator->fails()){
+            $total = $tarif * $meter;
+            $cekPemakaian = Pemakaian::where([
+                'tahun' => $tahun,
+                'bulan' => $bulan,
+                'user_id' => $id,
+            ])->first();
+            if($cekPemakaian){
+                $update = Pemakaian::where([
+                    'trx_id' => $cekPemakaian->trx_id,
+                ])->update([
+                    'meter' => $meter,
+                    'tarif' => $tarif,
+                    'total' => $total,
+                    'modified_by' => '1',
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+                if($update){
+                    echo json_encode(['status' => 1,'totalRp' => formatRupiah($total),'total' => $total]);
+                }else{
+                    echo json_encode(['status' => 0,'msg' => 'Gagal ubah data']);
+                }
+            }else{
+                $insert = Pemakaian::insert([
+                    'user_id' => $id,
+                    'tahun' => $tahun,
+                    'bulan' => $bulan,
+                    'meter' => $meter,
+                    'tarif' => $tarif,
+                    'total' => $total,
+                    'created_by' => '1',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+                if($insert){
+                    echo json_encode(['status' => 1,'totalRp' => formatRupiah($total),'total' => $total]);
+                }else{
+                    echo json_encode(['status' => 0,'msg' => 'Gagal input data']);
+                }
+            }
+        }else{
+            echo json_encode(['status' => 0,'msg' => 'Gagal input data']);
+        }
+    }
+    function pemakaianBayar(Request $req){
+        $tahun = $req->tahun;
+        $bulan = $req->bulan;
+        $id = $req->id;
+        $bayar = $req->bayar;
+
+        $validator = Validator::make($req->all(), [
+            'tahun' => 'required',
+            'bulan' => 'required',
+            'id' => 'required',
+        ]);
+
+        if(!$validator->fails()){
+            $cekPemakaian = Pemakaian::where([
+                'tahun' => $tahun,
+                'bulan' => $bulan,
+                'user_id' => $id,
+            ])->first();
+            if($cekPemakaian){
+                $update = Pemakaian::where([
+                    'trx_id' => $cekPemakaian->trx_id,
+                ])->update([
+                    'status' => '1',
+                    'modified_by' => '1',
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+                if($update){
+                    echo json_encode(['status' => 1,'meter' => $cekPemakaian->meter]);
+                }else{
+                    echo json_encode(['status' => 0,'msg' => 'Gagal bayar 1']);
+                }
+            }else{
+                echo json_encode(['status' => 0,'msg' => 'Gagal bayar 2']);
+            }
+        }else{
+            echo json_encode(['status' => 0,'msg' => 'Gagal bayar 3']);
+        }
     }
 }
