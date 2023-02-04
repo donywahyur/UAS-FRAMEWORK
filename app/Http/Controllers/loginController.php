@@ -25,9 +25,22 @@ class loginController extends Controller
       }
     }
     function searchTagihan(Request $request){
-        $no_pelanggan = $request->tagihan;
-        $data = DB::table('t_pemakaian')->where('username', $no_pelanggan)->get();
-        echo json_encode($data);
+        $no_pelanggan = $request->no_tagihan;
+        $data = DB::table('t_pemakaian')
+        ->join('m_user', 'm_user.id', '=', 't_pemakaian.user_id')
+        ->where('username', $no_pelanggan)
+        ->latest('trx_id')
+        ->first();
+
+        $response = array(
+          'no_pelanggan' => $no_pelanggan,
+          'nama' => $data->nama,
+          'tahun' => $data->tahun,
+          'bulan' => getNamaBulan($data->bulan),
+          'meter_air' => $data->meter,
+          'jumlah_tagihan' => $data->total
+        );
+        echo json_encode($response);
     }
     function logout(){
         Auth::logout();

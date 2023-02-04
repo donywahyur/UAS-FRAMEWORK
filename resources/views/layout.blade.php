@@ -23,6 +23,7 @@
     <link href="{{ asset('/') }}assets/plugins/perfectscroll/perfect-scrollbar.css" rel="stylesheet">
     <link href="{{ asset('/') }}assets/plugins/pace/pace.css" rel="stylesheet">
     <link href="{{ asset('/') }}assets/plugins/datatables/datatables.min.css" rel="stylesheet">
+    <link href="{{ asset('/') }}assets/plugins/select2/css/select2.min.css" rel="stylesheet">
 
     
     <!-- Theme Styles -->
@@ -73,8 +74,21 @@
                         </div>
                         <div class="d-flex">
                             <ul class="navbar-nav">
-                                <li class="nav-item hidden-on-mobile">
+                                {{-- <li class="nav-item hidden-on-mobile">
                                     <a class="nav-link active" href="./logout">Logout</a>
+                                </li> --}}
+                                <li class="nav-item hidden-on-mobile">
+                                    <a class="nav-link language-dropdown-toggle" href="#" id="languageDropDown" data-bs-toggle="dropdown">
+                                        <b> {{ Auth::user()->nama }} </b> <img src="{{ asset('/') }}assets/images/avatars/profile.png" alt="" style="margin-left: 10px;"> 
+                                    </a>
+                                        <ul class="dropdown-menu dropdown-menu-end language-dropdown" aria-labelledby="languageDropDown">
+                                            <li>
+                                                <a class="dropdown-item" href="./profile">Edit Profile</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="./logout">Logout</a>
+                                            </li>
+                                        </ul>
                                 </li>
                             </ul>
                         </div>
@@ -93,6 +107,8 @@
     <script src="{{ asset('/') }}assets/js/main.min.js"></script>
     <script src="{{ asset('/') }}assets/plugins/datatables/datatables.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('/') }}assets/plugins/select2/js/select2.full.min.js"></script>
+    <script src="{{ asset('/') }}assets/js/pages/select2.js"></script>
     <script>
         $(document).ready(function() {
             $('.datatables').DataTable();

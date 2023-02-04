@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LaporanBulananController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,3 +37,9 @@ Route::get('/pemakaian', [HomeController::class, 'pemakaian'])->name('pemakaian'
 Route::post('/pemakaian/table', [HomeController::class, 'pemakaianTable'])->name('pemakaianTable');
 Route::post('/pemakaian/input', [HomeController::class, 'pemakaianInput'])->name('pemakaianInput');
 Route::post('/pemakaian/bayar', [HomeController::class, 'pemakaianBayar'])->name('pemakaianBayar');
+
+Route::get('/laporan_bulanan', [LaporanBulananController::class, 'index'])->name('index');
+Route::post('/laporan_bulanan/table', [LaporanBulananController::class, 'laporanTable'])->name('laporanTable');
+
+Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+Route::post('/profile/edit', [HomeController::class, 'editProfile'])->name('editProfile');

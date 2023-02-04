@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col">
                     <div class="page-description">
-                        <h1>Pemakaian Meter Air </h1>
+                        <h1>Laporan Bulanan </h1>
                     </div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <form id="formFilter" action="./pemakaian/table" method="post">
+                            <form id="formFilter" action="./laporan_bulanan/table" method="post">
                                 @csrf
                                 <div class="form-group">
                                     <label for="inputTahun" class="form-label">Tahun</label>
@@ -28,18 +28,10 @@
                                 <div class="form-group">
                                     <label for="inputBulan" class="form-label">Bulan</label>
                                     <select name="bulan" id="inputBulan" class="form-control">
+                                        <option value="">Semua Bulan</option>
                                         @for($bulan = 1;$bulan <= 12;$bulan++)
-                                            <option value="{{ $bulan }}" {{ $bulan == date('m') ? 'selected' : '' }}>{{ getNamaBulan($bulan) }}</option>
+                                            <option value="{{ $bulan }}" >{{ getNamaBulan($bulan) }}</option>
                                         @endfor
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPelanggan" class="form-label">No Pelanggan</label>
-                                    <select name="user_id" id="inputPelanggan" class="form-control js-states">
-                                        <option value="">Semua Pelanggan</option>
-                                        @foreach ($pelanggan as $valpelanggan)
-                                            <option value="{{ $valpelanggan->id }}">{{ $valpelanggan->username." (".$valpelanggan->nama.")" }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 <br>

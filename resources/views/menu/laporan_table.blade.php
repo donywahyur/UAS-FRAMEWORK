@@ -18,28 +18,12 @@
                             <td>{{ $p->username }}</td>
                             <td>{{ $p->nama }}</td>
                             <td id="meter_td_{{ $p->id }}">
-                                @if($p->status == 0)
-                                    <div class="input-group mb-3">
-                                        @if (Auth::user()->role_id == 3)
-                                            {{ $p->meter ?? 0 }} m<sup>3</sup>
-                                        @else
-                                            <input onchange="inputPemakaian(this)" data-id="{{ $p->id }}" onkeypress="return isNumberKey(this,event)" type="text" class="form-control" value="{{ $p->meter ?? 0 }}">
-                                            <span class="input-group-text">m<sup>3</sup></span>
-                                        @endif
-                                    </div>
-                                @else
-                                    {{ $p->meter }} m<sup>3</sup>
-                                @endif
+                                {{ $p->meter }} m<sup>3</sup>
                             </td>
                             <td id="total_td_{{ $p->id }}">{{ formatRupiah($p->total) ?? formatRupiah(0) }}</td>
                             <td id="pembayaran_td_{{ $p->id }}">
                                 @if($p->status == 0 && $p->meter != 0)
-                                    @if (Auth::user()->role_id == 3 || Auth::user()->role_id == 1)
-                                        <button onclick="bayarPemakaian(this,{{ $p->id }})" class="btn btn-primary">Bayar</button>
-                                    @elseif(Auth::user()->role_id == 2)
-                                        <span class="badge badge-warning">Menunggu Pembayaran</span>
-                                    @endif
-                                    
+                                    <span class="badge badge-warning">Menunggu Pembayaran</span>
                                 @elseif($p->status == 0 && $p->meter == 0)
                                     <span class="badge badge-warning">Belum Input Meter</span>
                                 @else

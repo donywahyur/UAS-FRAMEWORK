@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Tarif;
 use App\Models\Pemakaian;
@@ -20,21 +21,30 @@ class HomeController extends Controller
         return view('menu.dashboard');
     }
     public function pelanggan(){
-        $user =  User::where('role_id', '4');
-        $data['pelanggan'] = $user->get();
-        $data['last_id'] = $user->orderBy('id', 'desc')->first();
+        $user =  User::orderBy('nama', 'asc')->get();
+        $pelangganid =  User::where('role_id', '4');
+        // print_r($pelangganid);
+        $data['pelanggan'] = $user;
+        $data['last_id'] = $pelangganid->orderBy('id', 'desc')->first();
         return view('menu.pelanggan',$data);
     }
     public function tambahPelanggan(Request $req){
         $user =  User::where('role_id', '4');
         $last_id = $user->orderBy('id', 'desc')->first();
+        if ($req->role_id!=4) {
+            $username = $req->username;
+            $password = bcrypt($req->password);
+        }else{
+            $username = ($last_id->username+1);
+            $password = bcrypt(($last_id->username+1));
+        }
         $insert = User::create([
-            'username' => ($last_id->username+1),
-            'password' => bcrypt(($last_id->username+1)),
+            'username' => $username,
+            'password' => $password,
             'nama' => $req->nama,
             'no_telp' => $req->no_telp,
             'alamat' => $req->alamat,
-            'role_id' => '4',
+            'role_id' => $req->role_id,
             'status' => '1',
         ]);
         if($insert){
@@ -49,13 +59,28 @@ class HomeController extends Controller
     }
 
     public function editPelanggan(Request $req){
-        $update = User::where('id', $req->id)->update([
-            'nama' => $req->nama,
-            'no_telp' => $req->no_telp,
-            'alamat' => $req->alamat,
-            'modified_by' => '1',
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        if ($req->role_id!=4) {
+            $updateuser = array(
+                'username' => $req->username,
+                'nama' => $req->nama,
+                'no_telp' => $req->no_telp,
+                'alamat' => $req->alamat,
+                'modified_by' => '1',
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            if ($req->password!=null) {
+                $updateuser['password'] = bcrypt($req->password);
+            }
+        }else{
+            $updateuser = array(
+                'nama' => $req->nama,
+                'no_telp' => $req->no_telp,
+                'alamat' => $req->alamat,
+                'modified_by' => '1',
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+        }
+        $update = User::where('id', $req->id)->update($updateuser);
         if($update){
             return redirect()->route('pelanggan')->with(['status' => 1 , 'msg' => 'Berhasil Mengubah Data']);
         }else{
@@ -110,11 +135,21 @@ class HomeController extends Controller
     }
 
     public function pemakaian(){
-        return view('menu.pemakaian');
+        $pelanggan = User::where('role_id','4');
+        $data['pelanggan'] = $pelanggan->get();
+        return view('menu.pemakaian',$data);
     }
     public function pemakaianTable(Request $req){
         $tahun = $req->tahun;
         $bulan = $req->bulan;
+        $user = $req->user_id;
+
+        $whereCondition = array(
+            'm_user.role_id' => 4, 
+        );
+        if ($user!=null) {
+            $whereCondition['m_user.id'] = $user;
+        }
 
         $data['data'] = User::select([
             'm_user.id',
@@ -133,7 +168,7 @@ class HomeController extends Controller
             $join->where('t_pemakaian.tahun', '=', $tahun);
             $join->where('t_pemakaian.bulan', '=', $bulan);
             $join->on('t_pemakaian.user_id', '=', 'm_user.id');
-        })->where('m_user.role_id',4)->get();
+        })->where($whereCondition)->get();
         $data['tahunPilih'] = $tahun;
         $data['bulanPilih'] = $bulan;
         return view('menu.pemakaian_table', $data);
@@ -231,6 +266,42 @@ class HomeController extends Controller
             }
         }else{
             echo json_encode(['status' => 0,'msg' => 'Gagal bayar 3']);
+        }
+    }
+
+    public function profile()
+    {
+        $data['user'] = User::where('id', Auth::user()->id)->first();
+        return view('menu.user_profile', $data);
+    }
+
+    public function editProfile(Request $req){
+        if ($req->role_id!=4) {
+            $updateuser = array(
+                'username' => $req->username,
+                'nama' => $req->nama,
+                'no_telp' => $req->no_telp,
+                'alamat' => $req->alamat,
+                'modified_by' => '1',
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            if ($req->password!=null) {
+                $updateuser['password'] = bcrypt($req->password);
+            }
+        }else{
+            $updateuser = array(
+                'nama' => $req->nama,
+                'no_telp' => $req->no_telp,
+                'alamat' => $req->alamat,
+                'modified_by' => '1',
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+        }
+        $update = User::where('id', $req->id)->update($updateuser);
+        if($update){
+            return redirect()->route('profile')->with(['status' => 1 , 'msg' => 'Berhasil Mengubah Data']);
+        }else{
+            return redirect()->route('profile')->with(['status' => 0 , 'msg' => 'Gagal Mengubah Data']);
         }
     }
 }

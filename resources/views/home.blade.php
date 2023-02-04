@@ -96,7 +96,10 @@
                                 <div><img src="{{ asset('/') }}logo.jpeg" class="image_1" style="border-radius:50px;"></div>
                             </div>
                             </div>
-                            <div class="button_main"><input style="color:black;" type="text" class="Enter_text" placeholder="No Pelanggan" name=""><button onclick="searchTagihan();" class="search_text">Cari</button></div>
+                            <div class="button_main">
+                                <input style="color:black;" type="text" class="Enter_text" placeholder="No Pelanggan" name="" id="txt-no_tahigan">
+                                <button onclick="searchTagihan();" class="search_text">Cari</button>
+                            </div>
                         </div>
                     </div>
                 <!-- <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
@@ -115,32 +118,55 @@
                 <div class="col-lg-8 ">
                     <div class="beauty_box">
                         <h1 class="bed_text">Detail Tagihan</h1>
-                        <table width="100%" cellpadding="5" cellspacing="5" style="font-size:15pt;">
-                            <tr>
-                                <th width="25%">No Pelanggan</th>
-                                <th>:</th>
-                            </tr>
-                            <tr>
-                                <th width="25%">Nama</th>
-                                <th>:</th>
-                            </tr>
-                            <tr>
-                                <th width="25%">Tahun</th>
-                                <th>:</th>
-                            </tr>
-                            <tr>
-                                <th width="25%">Bulan</th>
-                                <th>:</th>
-                            </tr>
-                            <tr>
-                                <th width="25%">Meter Air</th>
-                                <th>:</th>
-                            </tr>
-                            <tr>
-                                <th width="25%">Jumlah Tagihan</th>
-                                <th>:</th>
-                            </tr>
-                        </table>
+                        <div id="wrapper-tagihan">
+                            <center> <h4> <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading... </h4> </center>
+                        </div>
+                        <div id="wrapper-tbl-tagihan" style="display: none;">
+                            <table width="100%" cellpadding="5" cellspacing="5" style="font-size:15pt;">
+                                <tr>
+                                    <th width="25%">No Pelanggan</th>
+                                    <th>:</th>
+                                    <th>
+                                        <span id="spn-no_pelanggan"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="25%">Nama</th>
+                                    <th>:</th>
+                                    <th>
+                                        <span id="spn-nama"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="25%">Tahun</th>
+                                    <th>:</th>
+                                    <th>
+                                        <span id="spn-tahun"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="25%">Bulan</th>
+                                    <th>:</th>
+                                    <th>
+                                        <span id="spn-bulan"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="25%">Meter Air</th>
+                                    <th>:</th>
+                                    <th>
+                                        <span id="spn-meter"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th width="25%">Jumlah Tagihan</th>
+                                    <th>:</th>
+                                    <th>
+                                        <span id="spn-jumlah_tagihan"></span>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -306,28 +332,41 @@
                 @endif
             });
             async function searchTagihan(){
+                var no_tagihan = $('#txt-no_tahigan').val();
                 $.ajax({
                     url: "./searchTagihan",
                     type: "POST",
                     data: {
                         _token: "{{ csrf_token() }}",
-                        no_tagihan: $('#no_tagihan').val()
+                        no_tagihan: no_tagihan
                     },
                     dataType: "json",
+                    beforeSend: function(){
+                        $('#wrapper-tagihan').fadeIn();
+                        $('#wrapper-tbl-tagihan').fadeOut();
+                    },
                     success: function(data){
+                        $('#wrapper-tagihan').fadeOut();
+                        $('#wrapper-tbl-tagihan').fadeIn();
                         console.log(data);
+                        $('#spn-no_pelanggan').html(data.no_pelanggan);
+                        $('#spn-nama').html(data.nama);
+                        $('#spn-tahun').html(data.tahun);
+                        $('#spn-bulan').html(data.bulan);
+                        $('#spn-meter').html(data.meter_air);
+                        $('#spn-jumlah_tagihan').html(data.jumlah_tagihan);
                     }
                 });
                 $('#tagihan').show();
                 document.getElementById('tagihan').scrollIntoView();
             }
             $("#login_text").click(function(){
-                $(this).hide();
-                $("#login_form").delay(100).show();
+                $(this).fadeOut();
+                $("#login_form").fadeIn();
             });
             $("#login_close").click(function(){
-                $("#login_form").hide();
-                $("#login_text").delay(100).show();
+                $("#login_form").fadeOut();
+                $("#login_text").fadeIn();
             });
         </script>
    </body>
