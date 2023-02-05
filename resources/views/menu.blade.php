@@ -25,7 +25,7 @@
             </li>
         @endif
 
-        @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+        @if(Auth::user()->role_id == 1  || Auth::user()->role_id == 4)
         <li class="{{ $link == 'laporan_bulanan' ? 'active-page' : '' }}">
             <a href="./laporan_bulanan" class="{{ $link == '' ? 'active' : ''}}"><i class="material-icons-two-tone">article</i>Laporan Bulanan</a>
         </li>

@@ -1,0 +1,4 @@
+admin admin
+pma pma
+kasir kasir
+49680000001 49680000001

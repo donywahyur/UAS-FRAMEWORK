@@ -13,6 +13,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php 
+                        $total_bayar = 0 ;
+                        $total_belum = 0;
+                    @endphp
                     @foreach($data as $p)
                         <tr>
                             <td>{{ $p->username }}</td>
@@ -23,10 +27,12 @@
                             <td id="total_td_{{ $p->id }}">{{ formatRupiah($p->total) ?? formatRupiah(0) }}</td>
                             <td id="pembayaran_td_{{ $p->id }}">
                                 @if($p->status == 0 && $p->meter != 0)
+                                    @php $total_belum += $p->total; @endphp
                                     <span class="badge badge-warning">Menunggu Pembayaran</span>
                                 @elseif($p->status == 0 && $p->meter == 0)
                                     <span class="badge badge-warning">Belum Input Meter</span>
                                 @else
+                                    @php $total_bayar += $p->total; @endphp
                                     <span class="badge badge-success">Lunas {{ tgl_indo(explode(" ",$p->updated_at)[0]) }}</span>
                                 @endif
                             </td>
@@ -38,6 +44,29 @@
         </div>
     </div>
 </div>
+@if(Auth::user()->role_id == 1)
+<div class="col-6">
+    <div class="card">
+        <div class="card-header">Total</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <td>Total Bayar</td>
+                    <td>{{ formatRupiah($total_bayar) }}</td>
+                </tr>
+                <tr>
+                    <td>Total Belum Bayar</td>
+                    <td>{{ formatRupiah($total_belum) }}</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>{{ formatRupiah($total_bayar + $total_belum) }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+@endif
 <script>
     $(document).ready(function() {
         $('.datatables').DataTable();
