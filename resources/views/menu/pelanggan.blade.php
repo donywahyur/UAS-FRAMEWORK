@@ -88,8 +88,8 @@
                 <div class="modal-body">
                     @csrf
                     <div class="form-group">
-                      <label for="">Role</label>
-                      <select class="form-control" name="role_id" id="sel-role" onchange="roleselect()">
+                      <label for="sel-role">Role</label>
+                      <select style="width:100%;" class="form-control" name="role_id" id="sel-role" onchange="roleselect()">
                         <option value="1">Admin</option>
                         <option value="2">Pencatat Meter Air</option>
                         <option value="3">Kasir</option>
@@ -144,8 +144,8 @@
                 <div class="modal-body">
                     @csrf
                     <div class="form-group">
-                        <label for="">Role</label>
-                        <select class="form-control" name="role_id" id="sel-role-edit" onchange="roleselectedit()">
+                        <label for="sel-role-edit">Role</label>
+                        <select style="width:100%;" class="form-control" name="role_id" id="sel-role-edit" onchange="roleselectedit()">
                           <option value="1">Admin</option>
                           <option value="2">Pencatat Meter Air</option>
                           <option value="3">Kasir</option>

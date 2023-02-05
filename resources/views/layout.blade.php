@@ -40,6 +40,11 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="{{ asset('/') }}assets/plugins/jquery/jquery-3.5.1.min.js"></script>
+    <style>
+        .select2-container--open {
+            z-index: 9999999
+        }
+    </style>
 </head>
 <body>
     <div class="app align-content-stretch d-flex flex-wrap">
