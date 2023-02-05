@@ -55,7 +55,9 @@ class HomeController extends Controller
     }
 
     public function modalEditPelanggan($id){
-        echo json_encode(User::where('id', $id)->first());
+        $data['user'] = User::where('id', $id)->first();
+        return view('menu.pelanggan_edit',$data);
+        
     }
 
     public function editPelanggan(Request $req){

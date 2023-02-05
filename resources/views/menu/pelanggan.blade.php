@@ -143,42 +143,7 @@
             <form id="formEdit" action="./pelanggan/edit" method="post">
                 <div class="modal-body">
                     @csrf
-                    <div class="form-group">
-                        <label for="sel-role-edit">Role</label>
-                        <select style="width:100%;" class="form-control" name="role_id" id="sel-role-edit" onchange="roleselectedit()">
-                          <option value="1">Admin</option>
-                          <option value="2">Pencatat Meter Air</option>
-                          <option value="3">Kasir</option>
-                          <option value="4">Pelanggan</option>
-                        </select>
-                    </div>
-                    <div id="wrapper-other-edit">
-                        <div class="form-group">
-                            <label for="txt-username-edit" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" id="txt-username-edit">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPelanggan2" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password">
-                        </div>
-                    </div>
-                    <div class="form-group" id="wrapper-pelanggan-edit" style="display: none;">
-                        <label for="inputPelanggan2" class="form-label">No Pelanggan</label>
-                        <input type="text" class="form-control" id="inputPelanggan2"  disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputNama2" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="inputNama2" name="nama" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputNoTelp2" class="form-label">No Telp</label>
-                        <input type="text" class="form-control" id="inputNoTelp2" name="no_telp" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAlamat2" class="form-label">Alamat</label>
-                        <input type="text" class="form-control" id="inputAlamat2" name="alamat" required>
-                    </div>
-                    <input type="hidden" class="form-control" id="inputId" name="id" required><br>
+                    <div id="wrapper-modal-edit"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -214,21 +179,14 @@
         $.ajax({
             url: './pelanggan/edit/'+id,
             type: 'GET',
-            dataType: 'json',
             beforeSend:function () {
                 $('#btn-edit'+id).html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`).attr('disabled',true);
+                $('#wrapper-modal-edit').html(`<center><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...</center>`);
             },
-            success: function(data){
-                $('#sel-role-edit').val(data.role_id);
-                $('#inputPelanggan2').val(data.username);
-                $('#txt-username-edit').val(data.username);
-                $('#inputNama2').val(data.nama);
-                $('#inputNoTelp2').val(data.no_telp);
-                $('#inputAlamat2').val(data.alamat);
-                $('#inputId').val(data.id);
+            success: function(response){
+                $('#wrapper-modal-edit').html(response);
                 $('#editPelanggan').modal('show');
                 $('#btn-edit'+id).html('Edit').attr('disabled',false);
-                roleselectedit();
             }
         });
     }
