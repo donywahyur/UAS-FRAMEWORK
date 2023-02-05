@@ -122,7 +122,12 @@
                             <center> <h4> <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading... </h4> </center>
                         </div>
                         <div id="wrapper-tbl-tagihan" style="display: none;">
-                            <table width="100%" cellpadding="5" cellspacing="5" style="font-size:15pt;">
+                            <table width="100%" cellpadding="5" cellspacing="5" style="font-size:15pt;" id="not-found">
+                                <tr>
+                                    <th><center>Data Tidak Ditemukan</center></th>
+                                </tr>
+                            </table>
+                            <table width="100%" cellpadding="5" cellspacing="5" style="font-size:15pt;height:500px;" id="found">
                                 <tr>
                                     <th width="25%">No Pelanggan</th>
                                     <th>:</th>
@@ -348,13 +353,20 @@
                     success: function(data){
                         $('#wrapper-tagihan').fadeOut();
                         $('#wrapper-tbl-tagihan').fadeIn();
-                        console.log(data);
-                        $('#spn-no_pelanggan').html(data.no_pelanggan);
-                        $('#spn-nama').html(data.nama);
-                        $('#spn-tahun').html(data.tahun);
-                        $('#spn-bulan').html(data.bulan);
-                        $('#spn-meter').html(data.meter_air);
-                        $('#spn-jumlah_tagihan').html(data.jumlah_tagihan);
+                        // console.log(data);
+                        if(data.not_found == 0){
+                            $('#spn-no_pelanggan').html(data.no_pelanggan);
+                            $('#spn-nama').html(data.nama);
+                            $('#spn-tahun').html(data.tahun);
+                            $('#spn-bulan').html(data.bulan);
+                            $('#spn-meter').html(data.meter_air);
+                            $('#spn-jumlah_tagihan').html(data.jumlah_tagihan);
+                            $("#found").show();
+                            $("#not-found").hide();
+                        }else{
+                            $("#found").hide();
+                            $("#not-found").show();
+                        }
                     }
                 });
                 $('#tagihan').show();

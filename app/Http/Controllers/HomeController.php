@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Tarif;
 use App\Models\Pemakaian;
-use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class HomeController extends Controller
@@ -22,7 +21,7 @@ class HomeController extends Controller
         return view('menu.dashboard');
     }
     public function pelanggan(){
-        $user =  User::orderBy('nama', 'asc')->get();
+        $user =  User::orderBy('role_id', 'asc')->get();
         $pelangganid =  User::where('role_id', '4');
         // print_r($pelangganid);
         $data['pelanggan'] = $user;

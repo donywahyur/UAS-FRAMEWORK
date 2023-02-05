@@ -55,6 +55,7 @@ class LaporanBulananController extends Controller
             't_pemakaian.tarif',
             't_pemakaian.total',
             't_pemakaian.status',
+            't_pemakaian.updated_at',
         ])->join('m_user', 't_pemakaian.user_id', '=', 'm_user.id')
         ->where($whereCondition)->get();
         $data['tahunPilih'] = $tahun;

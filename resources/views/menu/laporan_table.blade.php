@@ -27,7 +27,7 @@
                                 @elseif($p->status == 0 && $p->meter == 0)
                                     <span class="badge badge-warning">Belum Input Meter</span>
                                 @else
-                                    <span class="badge badge-success">Lunas</span>
+                                    <span class="badge badge-success">Lunas {{ tgl_indo(explode(" ",$p->updated_at)[0]) }}</span>
                                 @endif
                             </td>
 

@@ -19,7 +19,12 @@ class loginController extends Controller
         'password' => $request->password,
       );
       if (Auth::attempt($cred)) {
-        return redirect('/dashboard');
+        if(Auth::user()->status == 0){
+          Auth::logout();
+          return redirect('/')->with('error', 'User dinonaktifkan');
+        }else{
+          return redirect('/dashboard');
+        }
       }else{
         return redirect('/')->with('error', 'Username atau Password Salah');
       }
@@ -31,16 +36,21 @@ class loginController extends Controller
         ->where('username', $no_pelanggan)
         ->latest('trx_id')
         ->first();
-
-        $response = array(
-          'no_pelanggan' => $no_pelanggan,
-          'nama' => $data->nama,
-          'tahun' => $data->tahun,
-          'bulan' => getNamaBulan($data->bulan),
-          'meter_air' => $data->meter,
-          'jumlah_tagihan' => $data->total
-        );
-        echo json_encode($response);
+        
+        if($data){
+          $response = array(
+            'no_pelanggan' => $no_pelanggan,
+            'nama' => $data->nama,
+            'tahun' => $data->tahun,
+            'bulan' => getNamaBulan($data->bulan),
+            'meter_air' => $data->meter,
+            'jumlah_tagihan' => $data->total,
+            'not_found' => 0
+          );  
+          echo json_encode($response);
+        }else{
+          echo json_encode(array('not_found' => 1));
+        }
     }
     function logout(){
         Auth::logout();
